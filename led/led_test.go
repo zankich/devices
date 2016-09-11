@@ -3,7 +3,7 @@ package led
 import (
 	"testing"
 
-	"golang.org/x/exp/io/gpio/driver"
+	"github.com/goiot/exp/gpio/driver"
 )
 
 type conn struct {
