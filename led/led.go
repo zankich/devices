@@ -1,8 +1,8 @@
 package led
 
 import (
-	"golang.org/x/exp/io/gpio"
-	"golang.org/x/exp/io/gpio/driver"
+	"github.com/goiot/exp/gpio"
+	"github.com/goiot/exp/gpio/driver"
 )
 
 type Device interface {
