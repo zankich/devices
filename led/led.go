@@ -5,39 +5,46 @@ import (
 	"github.com/goiot/exp/gpio/driver"
 )
 
-type Device interface {
+const (
+	lo = 0
+	hi = 1
+)
+
+type device interface {
 	SetValue(pin string, v int) error
 }
 
-type Led struct {
-	Device Device
-	on     bool
-	Pin    string
+type LED struct {
+	device device
+	pin    string
+	v      int
 }
 
-func NewLED(o driver.Opener, pin string) (*Led, error) {
+func NewLED(o driver.Opener, pin string) (*LED, error) {
 	dev, err := gpio.Open(o)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Led{
-		Device: dev,
-		Pin:    pin,
+	return &LED{
+		device: dev,
+		pin:    pin,
 	}, nil
 }
 
-func (l *Led) Toggle() error {
-	if l.on {
-		if err := l.Device.SetValue(l.Pin, 0); err != nil {
-			return err
-		}
-		l.on = false
-	} else {
-		if err := l.Device.SetValue(l.Pin, 1); err != nil {
-			return err
-		}
-		l.on = true
-	}
-	return nil
+func (l *LED) On() error {
+	return l.setDeviceValue(hi)
+}
+
+func (l *LED) Off() error {
+	return l.setDeviceValue(lo)
+}
+
+func (l *LED) Toggle() error {
+	return l.setDeviceValue(l.v ^ 1)
+}
+
+func (l *LED) setDeviceValue(val int) error {
+	l.v = val
+	return l.device.SetValue(l.pin, val)
 }

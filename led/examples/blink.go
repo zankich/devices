@@ -20,11 +20,25 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("turn on the light in 2s...")
+	time.Sleep(2 * time.Second)
+	if err := l.On(); err != nil {
+		panic(err)
+	}
+
+	fmt.Println("turn off the light in 2s...")
+	time.Sleep(2 * time.Second)
+	if err := l.Off(); err != nil {
+		panic(err)
+	}
+
+	fmt.Println("in 2s, toggle the light every .5s...")
+	time.Sleep(2 * time.Second)
 	for {
 		fmt.Println("toggle")
 		if err := l.Toggle(); err != nil {
 			panic(err)
 		}
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
