@@ -5,10 +5,14 @@ import (
 	"golang.org/x/exp/io/gpio/driver"
 )
 
+type Device interface {
+	SetValue(pin string, v int) error
+}
+
 type Led struct {
-	Device *gpio.Device
+	Device Device
 	on     bool
-	pin    string
+	Pin    string
 }
 
 func NewLED(o driver.Opener, pin string) (*Led, error) {
@@ -19,18 +23,18 @@ func NewLED(o driver.Opener, pin string) (*Led, error) {
 
 	return &Led{
 		Device: dev,
-		pin:    pin,
+		Pin:    pin,
 	}, nil
 }
 
 func (l *Led) Toggle() error {
 	if l.on {
-		if err := l.Device.SetValue(l.pin, 0); err != nil {
+		if err := l.Device.SetValue(l.Pin, 0); err != nil {
 			return err
 		}
 		l.on = false
 	} else {
-		if err := l.Device.SetValue(l.pin, 1); err != nil {
+		if err := l.Device.SetValue(l.Pin, 1); err != nil {
 			return err
 		}
 		l.on = true
