@@ -10,24 +10,24 @@ const (
 	hi = 1
 )
 
-type device interface {
+type Device interface {
 	SetValue(pin string, v int) error
 }
 
 type LED struct {
-	device device
+	Device Device
 	pin    string
 	v      int
 }
 
-func NewLED(o driver.Opener, pin string) (*LED, error) {
+func New(o driver.Opener, pin string) (*LED, error) {
 	dev, err := gpio.Open(o)
 	if err != nil {
 		return nil, err
 	}
 
 	return &LED{
-		device: dev,
+		Device: dev,
 		pin:    pin,
 	}, nil
 }
@@ -46,5 +46,5 @@ func (l *LED) Toggle() error {
 
 func (l *LED) setDeviceValue(val int) error {
 	l.v = val
-	return l.device.SetValue(l.pin, val)
+	return l.Device.SetValue(l.pin, val)
 }
