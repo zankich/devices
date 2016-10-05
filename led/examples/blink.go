@@ -15,7 +15,7 @@ func main() {
 		panic(err)
 	}
 
-	l, err := led.NewLED(i2co, "D2")
+	l, err := led.New(i2co, "D2")
 	if err != nil {
 		panic(err)
 	}
