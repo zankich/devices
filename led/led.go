@@ -12,6 +12,7 @@ const (
 
 type Device interface {
 	SetValue(pin string, v int) error
+	SetPWMValue(ping string, v int) error
 }
 
 type LED struct {
@@ -42,6 +43,10 @@ func (l *LED) Off() error {
 
 func (l *LED) Toggle() error {
 	return l.setDeviceValue(l.v ^ 1)
+}
+
+func (l *LED) SetBrightness(v int) error {
+	return l.Device.SetPWMValue(l.pin, v)
 }
 
 func (l *LED) setDeviceValue(val int) error {
